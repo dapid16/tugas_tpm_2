@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tugas2mobilee/pages/pyramid_page.dart';
 import 'login_page.dart';
 import 'calculator_page.dart';
 import 'number_check_page.dart';
@@ -16,9 +17,7 @@ class HomePage extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
+              decoration: BoxDecoration(color: Colors.blue),
               child: Text(
                 'Menu Navigasi',
                 style: TextStyle(color: Colors.white, fontSize: 24),
@@ -28,10 +27,12 @@ class HomePage extends StatelessWidget {
               leading: const Icon(Icons.calculate),
               title: const Text('Kalkulator'),
               onTap: () {
-                Navigator.pop(context); 
+                Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CalculatorPage()),
+                  MaterialPageRoute(
+                    builder: (context) => const CalculatorPage(),
+                  ),
                 );
               },
             ),
@@ -42,7 +43,9 @@ class HomePage extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const NumberCheckPage()),
+                  MaterialPageRoute(
+                    builder: (context) => const NumberCheckPage(),
+                  ),
                 );
               },
             ),
@@ -50,25 +53,41 @@ class HomePage extends StatelessWidget {
               leading: const Icon(Icons.add_circle_outline),
               title: const Text('Jumlah Total Angka'),
               onTap: () {
-                Navigator.pop(context); 
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const SumInputPage()),
                 );
               },
             ),
-            const Divider(), 
+            ListTile(
+              leading: const Icon(Icons.numbers),
+              title: const Text('Piramida'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PyramidPage()),
+                );
+              },
+            ),
+
+            const Divider(),
             ListTile(
               leading: const Icon(Icons.logout, color: Colors.red),
               title: const Text(
                 'Logout',
-                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               onTap: () {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => const LoginPage()),
-                  (Route<dynamic> route) => false, // false berarti hapus semua history
+                  (Route<dynamic> route) =>
+                      false, // false berarti hapus semua history
                 );
               },
             ),
