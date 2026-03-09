@@ -56,30 +56,30 @@ class GroupPage extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            padding: EdgeInsets.only(top: 10, bottom: 40),
+            padding: EdgeInsets.only(top: 10, bottom: 30),
             decoration: BoxDecoration(
               color: Colors.blue.shade700,
               borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(40),
-                bottomRight: Radius.circular(40),
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
               ),
             ),
             child: Column(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.groups, size: 70, color: Colors.white,),
+                  child: const Icon(Icons.groups, size: 45, color: Colors.white,),
                 ),
-                const SizedBox(height: 16,),
-                const Text(
-                  'Kenalan dengan Kelompok Kami',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, color: Colors.white70,fontWeight: FontWeight.w500,),
-                ),
+                // const SizedBox(height: 16,),
+                // const Text(
+                //   'Kenalan dengan Kelompok Kami',
+                //   textAlign: TextAlign.center,
+                //   style: TextStyle(fontSize: 16, color: Colors.white70,fontWeight: FontWeight.w500,),
+                // ),
               ],
             ),
           ),
