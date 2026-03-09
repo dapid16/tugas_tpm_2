@@ -14,7 +14,8 @@ class HomePage extends StatelessWidget {
   Widget _buildMenuCard(BuildContext context, String title, IconData icon, Widget page) {
     return Card(
       elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      shadowColor: Colors.blue.shade100,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: InkWell( // InkWell ini biar Card-nya ngasih efek animasi pas diklik
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => page));
@@ -23,12 +24,19 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 50, color: Colors.blue), // Icon dibikin gede
-            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.blue.shade50,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, size: 50, color: Colors.blue),
+            ), // Icon dibikin gede
+            const SizedBox(height: 12),
             Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.grey.shade800,),
             ),
           ],
         ),
@@ -40,63 +48,88 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100, // Warna background disamain kayak login
-      appBar: AppBar(title: const Text('Menu Utama')),
+      
+      appBar: AppBar(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Menu Utama', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+          ],
+        ),
+      backgroundColor: Colors.blue.shade700,
+      foregroundColor: Colors.white,
+      elevation: 0,
+      ),
       
       // Drawer (Sidebar) tetep dipertahanin persis kayak sebelumnya
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text(
-                'Menu Navigasi',
-                style: TextStyle(color: Colors.white, fontSize: 24),
+            DrawerHeader(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.blue.shade800, Colors.blue.shade400],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Icon(Icons.account_circle, size: 60, color: Colors.white,),
+                  SizedBox(height: 10,),
+                  Text(
+                    'Menu Navigasi',
+                    style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.group),
-              title: const Text('Daftar Kelompok'),
+              leading: Icon(Icons.group, color: Colors.blue.shade700),
+              title: const Text('Daftar Kelompok', style: TextStyle(fontWeight: FontWeight.w500),),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const GroupPage()));
               },
             ),
             ListTile(
-              leading: const Icon(Icons.calculate),
-              title: const Text('Kalkulator'),
+              leading: Icon(Icons.calculate, color: Colors.blue.shade700),
+              title: const Text('Kalkulator', style: TextStyle(fontWeight: FontWeight.w500),),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const CalculatorPage()));
               },
             ),
             ListTile(
-              leading: const Icon(Icons.numbers),
-              title: const Text('Ganjil Genap & Prima'),
+              leading: Icon(Icons.numbers, color: Colors.blue.shade700),
+              title: const Text('Ganjil Genap & Prima', style: TextStyle(fontWeight: FontWeight.w500),),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const NumberCheckPage()));
               },
             ),
             ListTile(
-              leading: const Icon(Icons.add_circle_outline),
-              title: const Text('Jumlah Total Angka'),
+              leading: Icon(Icons.add_circle_outline, color: Colors.blue.shade700),
+              title: const Text('Jumlah Total Angka', style: TextStyle(fontWeight: FontWeight.w500),),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const SumInputPage()));
               },
             ),
             ListTile(
-              leading: const Icon(Icons.change_history),
-              title: const Text('Piramida'),
+              leading: Icon(Icons.change_history, color: Colors.blue.shade700),
+              title: const Text('Piramida', style: TextStyle(fontWeight: FontWeight.w500),),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const PyramidPage()));
               },
             ),
             ListTile(
-              leading: const Icon(Icons.timer),
-              title: const Text('Stopwatch'),
+              leading: Icon(Icons.timer, color: Colors.blue.shade700),
+              title: const Text('Stopwatch', style: TextStyle(fontWeight: FontWeight.w500),),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const StopwatchPage()));
@@ -119,22 +152,37 @@ class HomePage extends StatelessWidget {
       ),
       
       // Ini dia sulapnya bro, body-nya kita ubah jadi GridView!
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.count(
-          crossAxisCount: 2, // Artinya 2 kotak ke samping
-          crossAxisSpacing: 16, // Jarak antar kotak kiri-kanan
-          mainAxisSpacing: 16, // Jarak antar kotak atas-bawah
-          children: [
-            // Tinggal panggil fungsi helpernya buat masing-masing menu
-            _buildMenuCard(context, 'Daftar Kelompok', Icons.group, const GroupPage()),
-            _buildMenuCard(context, 'Kalkulator', Icons.calculate, const CalculatorPage()),
-            _buildMenuCard(context, 'Ganjil & Prima', Icons.numbers, const NumberCheckPage()),
-            _buildMenuCard(context, 'Total Angka', Icons.add_circle_outline, const SumInputPage()),
-            _buildMenuCard(context, 'Piramida', Icons.change_history, const PyramidPage()),
-            _buildMenuCard(context, 'Stopwatch', Icons.timer, const StopwatchPage()),
-          ],
-        ),
+      body: Stack(
+        children: [
+          Container(
+            height: 120,
+            decoration: BoxDecoration(
+              color: Colors.blue.shade700,
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+              ), 
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: GridView.count(
+              crossAxisCount: 2, // Artinya 2 kotak ke samping
+              crossAxisSpacing: 16, // Jarak antar kotak kiri-kanan
+              mainAxisSpacing: 16, // Jarak antar kotak atas-bawah
+              childAspectRatio: 1.0,
+              children: [
+                // Tinggal panggil fungsi helpernya buat masing-masing menu
+                _buildMenuCard(context, 'Daftar Kelompok', Icons.group, const GroupPage()),
+                _buildMenuCard(context, 'Kalkulator', Icons.calculate, const CalculatorPage()),
+                _buildMenuCard(context, 'Ganjil & Prima', Icons.numbers, const NumberCheckPage()),
+                _buildMenuCard(context, 'Total Angka', Icons.add_circle_outline, const SumInputPage()),
+                _buildMenuCard(context, 'Piramida', Icons.change_history, const PyramidPage()),
+                _buildMenuCard(context, 'Stopwatch', Icons.timer, const StopwatchPage()),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
