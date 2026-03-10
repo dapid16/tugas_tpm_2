@@ -15,6 +15,13 @@ class _PyramidPageState extends State<PyramidPage> {
   String _hasilVolume = '0';
   String _hasilLuas = '0';
 
+  @override
+  void dispose() {
+    _sisiController.dispose();
+    _tinggiController.dispose();
+    super.dispose();
+  }
+
   void _hitungPiramida() {
     double sisi = double.tryParse(_sisiController.text) ?? 0;
     double tinggi = double.tryParse(_tinggiController.text) ?? 0; 
@@ -35,36 +42,60 @@ class _PyramidPageState extends State<PyramidPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: AppBar(title: const Text('Luas & Volume Piramida')),
+      appBar: AppBar(
+        title: const Text('Luas & Volume Piramida', style: TextStyle(fontWeight: FontWeight.bold),),
+        backgroundColor: Colors.blue.shade700,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+      ),
+      
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Card(
-          elevation: 8,
+          elevation: 5,
+          shadowColor: Colors.blue.shade100,
+          color: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(24),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: const EdgeInsets.all(32.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.change_history, size: 80, color: Colors.orange),
-                const SizedBox(height: 20),
-                
-                const Text(
-                  'Kalkulator Limas Segi Empat',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                Container(
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.shade50,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(Icons.change_history, size: 80, color: Colors.orange),
                 ),
                 const SizedBox(height: 20),
+                
+                Text(
+                  'Kalkulator Limas Segi Empat',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey.shade800),
+                ),
+                const SizedBox(height: 24),
                 
                 TextField(
                   controller: _sisiController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    labelText: 'Sisi Alas',
+                    labelText: 'Panjang Sisi Alas',
+                    hintText: 'masukan Nilai Sisi',
                     prefixIcon: const Icon(Icons.square_foot),
-                    border: OutlineInputBorder(
+                    filled: true,
+                    fillColor: Colors.grey.shade50,
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: Colors.orange.shade400, width: 2),
                     ),
                   ),
                 ),
@@ -75,9 +106,13 @@ class _PyramidPageState extends State<PyramidPage> {
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     labelText: 'Tinggi Piramida',
+                    hintText: 'masukan Nilai Tinggi',
                     prefixIcon: const Icon(Icons.height),
-                    border: OutlineInputBorder(
+                    filled: true,
+                    fillColor: Colors.grey.shade50,
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: Colors.orange.shade400, width: 2),
                     ),
                   ),
                 ),
@@ -85,32 +120,32 @@ class _PyramidPageState extends State<PyramidPage> {
                 
                 SizedBox(
                   width: double.infinity,
-                  height: 50,
+                  height: 55,
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
+                      backgroundColor: Colors.orange.shade600,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ),
                     onPressed: _hitungPiramida,
-                    icon: const Icon(Icons.calculate, color: Colors.white),
+                    icon: const Icon(Icons.calculate, color: Colors.black87,),
                     label: const Text(
                       'Hitung Dimensi',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.black87 ,letterSpacing: 1),
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),
-                const Divider(),
-                const SizedBox(height: 16),
+                const SizedBox(height: 32),
+                const Divider(color: Colors.black12,),
+                const SizedBox(height: 24),
                 
                 // Kotak Hasil
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                   decoration: BoxDecoration(
                     color: Colors.orange.shade50,
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.orange.shade200),
                   ),
                   child: Row(
@@ -119,12 +154,12 @@ class _PyramidPageState extends State<PyramidPage> {
                       Expanded(
                         child: Column(
                           children: [
-                            const Text('Luas Permukaan', style: TextStyle(color: Colors.grey, fontSize: 12)),
+                            Text('LUAS PERMUKAAN', style: TextStyle(color: Colors.orange.shade800, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
                             const SizedBox(height: 8),
                             Text(
                               _hasilLuas,
                               style: const TextStyle(
-                                fontSize: 22, 
+                                fontSize: 24, 
                                 fontWeight: FontWeight.bold, 
                                 color: Colors.orange
                               ),
@@ -132,7 +167,7 @@ class _PyramidPageState extends State<PyramidPage> {
                           ],
                         ),
                       ),
-                      Container(height: 40, width: 1, color: Colors.orange.shade200),
+                      Container(height: 40, width: 1, color: Colors.orange.shade300),
                       Expanded(
                         child: Column(
                           children: [
@@ -140,10 +175,10 @@ class _PyramidPageState extends State<PyramidPage> {
                             const SizedBox(height: 8),
                             Text(
                               _hasilVolume,
-                              style: const TextStyle(
-                                fontSize: 22, 
+                              style: TextStyle(
+                                fontSize: 24, 
                                 fontWeight: FontWeight.bold, 
-                                color: Colors.deepOrange
+                                color: Colors.deepOrange.shade600,
                               ),
                             ),
                           ],
