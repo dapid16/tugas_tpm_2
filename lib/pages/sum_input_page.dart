@@ -14,6 +14,12 @@ class _SumInputPageState extends State<SumInputPage> {
   String _banyakDigit = '0';
   String _rincian = '-';
 
+  @override
+  void dispose(){
+    _angkaController.dispose();
+    super.dispose();
+  }
+
   void _hitungTotal() {
     String input = _angkaController.text;
     int total = 0;
@@ -40,36 +46,59 @@ class _SumInputPageState extends State<SumInputPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: AppBar(title: const Text('Jumlah Total Angka')),
+      appBar: AppBar(
+        title: const Text('Jumlah Total Angka', style: TextStyle(fontWeight: FontWeight.bold),),
+        backgroundColor: Colors.blue.shade700,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Card(
-          elevation: 8,
+          elevation: 5,
+          shadowColor: Colors.blue.shade100,
+          color: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(24),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: const EdgeInsets.all(32.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.add_circle, size: 80, color: Colors.teal),
-                const SizedBox(height: 20),
-                
-                const Text(
-                  'Kalkulator Digit Angka',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                Container(
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Colors.teal.shade50,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(Icons.add_circle, size: 60, color: Colors.teal.shade600),
                 ),
                 const SizedBox(height: 20),
+                
+                Text(
+                  'Kalkulator Digit Angka',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.grey.shade800),
+                ),
+                const SizedBox(height: 24),
                 
                 TextField(
                   controller: _angkaController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    labelText: 'Masukkan Deret Angka (Cth: 1234)',
+                    labelText: 'Masukkan Deret Angka',
+                    hintText: '(Cth: 1234)',
                     prefixIcon: const Icon(Icons.pin),
-                    border: OutlineInputBorder(
+                    filled: true,
+                    fillColor: Colors.grey.shade50,
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: Colors.teal.shade400),
                     ),
                   ),
                 ),
@@ -77,10 +106,12 @@ class _SumInputPageState extends State<SumInputPage> {
                 
                 SizedBox(
                   width: double.infinity,
-                  height: 50,
+                  height: 55,
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal,
+                      backgroundColor: Colors.teal.shade600,
+                      foregroundColor: Colors.white,
+                      elevation: 3,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
@@ -89,55 +120,63 @@ class _SumInputPageState extends State<SumInputPage> {
                     icon: const Icon(Icons.functions, color: Colors.white),
                     label: const Text(
                       'Hitung Sekarang',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1),
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),
-                const Divider(),
-                const SizedBox(height: 16),
+                const SizedBox(height: 32),
+                const Divider(color: Colors.black12,),
+                const SizedBox(height: 24),
                 
                 // Kotak khusus buat nampilin hasil biar eksklusif
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                   decoration: BoxDecoration(
                     color: Colors.teal.shade50, // Latar belakang transparan dikit
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.teal.shade200),
                   ),
                   child: Column(
                     children: [
-                      const Text(
+                      Text(
                         'Rincian Perhitungan:', 
-                        style: TextStyle(color: Colors.teal, fontWeight: FontWeight.bold)
+                        style: TextStyle(color: Colors.teal.shade700, fontWeight: FontWeight.bold, fontSize: 14),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 12),
                       Text(
                         _rincian,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 16, letterSpacing: 2),
+                        style: TextStyle(
+                          fontSize: 18, 
+                          letterSpacing: 2,
+                          color: Colors.grey.shade800,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
+                      const SizedBox(height: 20),
+                      Divider(color: Colors.teal.shade200, thickness: 1,), // Garis putih pembatas
                       const SizedBox(height: 16),
-                      const Divider(color: Colors.white), // Garis putih pembatas
-                      const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Column(
                             children: [
-                              const Text('Banyak Digit', style: TextStyle(color: Colors.grey)),
+                              Text('BANYAK DIGIT', style: TextStyle(color: Colors.teal.shade600, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                              const SizedBox(height: 8,),
                               Text(
                                 _banyakDigit,
-                                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87),
+                                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.grey.shade800),
                               ),
                             ],
                           ),
+                          Container(height: 40, width: 1, color: Colors.teal.shade200,),
                           Column(
                             children: [
-                              const Text('Total Jumlah', style: TextStyle(color: Colors.grey)),
+                              Text('TOTAL JUMLAH', style: TextStyle(color: Colors.teal.shade600, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                              const SizedBox(height: 8,),
                               Text(
                                 _hasilTotal,
-                                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.teal),
+                                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.teal.shade700),
                               ),
                             ],
                           ),
