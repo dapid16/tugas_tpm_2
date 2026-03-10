@@ -52,42 +52,69 @@ class _StopwatchPageState extends State<StopwatchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: AppBar(title: const Text('Stopwatch')),
+      appBar: AppBar(
+        title: const Text('Stopwatch', style: TextStyle(fontWeight: FontWeight.bold),),
+        backgroundColor: Colors.blue.shade700,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+      ),
+      
       body: Center( // Center biar Card-nya persis di tengah layar
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
           child: Card(
-            elevation: 8,
+            elevation: 5,
+            shadowColor: Colors.blue.shade100,
+            color: Colors.white,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(24),
             ),
             child: Padding(
               padding: const EdgeInsets.all(32.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.timer, size: 80, color: Colors.indigo),
+                  Container(
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: Colors.indigo.shade50,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(Icons.timer, size: 60, color: Colors.indigo.shade600)
+                  ),
                   const SizedBox(height: 20),
-                  const Text(
+
+                  Text(
                     'Digital Timer',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey.shade800),
                   ),
                   const SizedBox(height: 30),
                   
                   // Kotak Layar Digital
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
                     decoration: BoxDecoration(
-                      color: Colors.indigo.shade50,
-                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white70,
+                      borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: Colors.indigo.shade200, width: 2),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.indigo.shade200,
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
                     child: Text(
                       _formatWaktu(_stopwatch.elapsedMilliseconds),
-                      style: const TextStyle(
-                        fontSize: 48,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 52,
                         fontWeight: FontWeight.bold,
-                        color: Colors.indigo,
+                        color: Colors.black87,
+                        letterSpacing: 2,
                         fontFeatures: [FontFeature.tabularFigures()], // Biar font nggak goyang
                       ),
                     ),
@@ -99,30 +126,36 @@ class _StopwatchPageState extends State<StopwatchPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
-                        child: ElevatedButton(
+                        child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 16),
-                            backgroundColor: Colors.green,
+                            backgroundColor: Colors.green.shade600,
+                            foregroundColor: Colors.white,
+                            elevation: _stopwatch.isRunning ? 0 : 3,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
                           ),
                           onPressed: _stopwatch.isRunning ? null : _startTimer,
-                          child: const Text('Start', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                          icon: const Icon(Icons.play_arrow),
+                          label: const Text('Start', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: 16),
                       Expanded(
-                        child: ElevatedButton(
+                        child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 16),
-                            backgroundColor: Colors.red,
+                            backgroundColor: Colors.red.shade500,
+                            foregroundColor: Colors.white,
+                            elevation: _stopwatch.isRunning ? 0 : 3,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
                           ),
                           onPressed: _stopwatch.isRunning ? _stopTimer : null,
-                          child: const Text('Stop', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                          icon: const Icon(Icons.stop),
+                          label: const Text('Stop', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                         ),
                       ),
                     ],
@@ -135,15 +168,16 @@ class _StopwatchPageState extends State<StopwatchPage> {
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: Colors.grey.shade300,
-                        foregroundColor: Colors.black87,
+                        backgroundColor: Colors.grey.shade200,
+                        foregroundColor: Colors.grey.shade800,
+                        elevation: 1,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
                       ),
                       onPressed: _resetTimer,
                       icon: const Icon(Icons.refresh),
-                      label: const Text('Reset', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      label: const Text('Reset Timer', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                     ),
                   ),
                 ],
