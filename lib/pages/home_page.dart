@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tugas2mobilee/pages/pyramid_page.dart'; // Biarin import bawaan lu
+import 'package:tugas2mobilee/pages/pyramid_page.dart'; 
 import 'login_page.dart';
 import 'calculator_page.dart';
 import 'number_check_page.dart';
@@ -10,13 +10,12 @@ import 'group_page.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  // Fungsi helper biar kita gampang bikin kotak menu tanpa nulis ulang kodenya
   Widget _buildMenuCard(BuildContext context, String title, IconData icon, Widget page) {
     return Card(
       elevation: 4,
       shadowColor: Colors.blue.shade100,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: InkWell( // InkWell ini biar Card-nya ngasih efek animasi pas diklik
+      child: InkWell( 
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => page));
         },
@@ -31,7 +30,7 @@ class HomePage extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: Icon(icon, size: 50, color: Colors.blue),
-            ), // Icon dibikin gede
+            ),
             const SizedBox(height: 12),
             Text(
               title,
@@ -47,7 +46,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100, // Warna background disamain kayak login
+      backgroundColor: Colors.grey.shade100, 
       
       appBar: AppBar(
         title: Column(
@@ -61,7 +60,6 @@ class HomePage extends StatelessWidget {
       elevation: 0,
       ),
       
-      // Drawer (Sidebar) tetep dipertahanin persis kayak sebelumnya
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -150,8 +148,7 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      
-      // Ini dia sulapnya bro, body-nya kita ubah jadi GridView!
+
       body: Stack(
         children: [
           Container(
@@ -167,12 +164,11 @@ class HomePage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: GridView.count(
-              crossAxisCount: 2, // Artinya 2 kotak ke samping
-              crossAxisSpacing: 16, // Jarak antar kotak kiri-kanan
-              mainAxisSpacing: 16, // Jarak antar kotak atas-bawah
+              crossAxisCount: 2, 
+              crossAxisSpacing: 16, 
+              mainAxisSpacing: 16, 
               childAspectRatio: 1.0,
               children: [
-                // Tinggal panggil fungsi helpernya buat masing-masing menu
                 _buildMenuCard(context, 'Daftar Kelompok', Icons.group, const GroupPage()),
                 _buildMenuCard(context, 'Kalkulator', Icons.calculate, const CalculatorPage()),
                 _buildMenuCard(context, 'Ganjil & Prima', Icons.numbers, const NumberCheckPage()),

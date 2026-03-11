@@ -30,16 +30,20 @@ class _StopwatchPageState extends State<StopwatchPage> {
     setState(() {});
   }
 
+  // --- LOGIKA JAM DITAMBAHKAN DI SINI ---
   String _formatWaktu(int milliseconds) {
     int ratusan = (milliseconds / 10).truncate() % 100;
     int detik = (milliseconds / 1000).truncate() % 60;
     int menit = (milliseconds / (1000 * 60)).truncate() % 60;
+    int jam = (milliseconds / (1000 * 60 * 60)).truncate(); // Ini variabel jamnya
 
+    String jamStr = jam.toString().padLeft(2, '0');
     String menitStr = menit.toString().padLeft(2, '0');
     String detikStr = detik.toString().padLeft(2, '0');
     String ratusanStr = ratusan.toString().padLeft(2, '0');
 
-    return "$menitStr:$detikStr.$ratusanStr";
+    // Return format lengkap: Jam:Menit:Detik.Milidetik
+    return "$jamStr:$menitStr:$detikStr.$ratusanStr";
   }
 
   @override
@@ -60,7 +64,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
         centerTitle: true,
       ),
       
-      body: Center( // Center biar Card-nya persis di tengah layar
+      body: Center( 
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
           child: Card(
@@ -94,7 +98,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
                   // Kotak Layar Digital
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 10), // Padding disesuaikan biar muat
                     decoration: BoxDecoration(
                       color: Colors.white70,
                       borderRadius: BorderRadius.circular(20),
@@ -107,15 +111,18 @@ class _StopwatchPageState extends State<StopwatchPage> {
                         ),
                       ],
                     ),
-                    child: Text(
-                      _formatWaktu(_stopwatch.elapsedMilliseconds),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 52,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                        letterSpacing: 2,
-                        fontFeatures: [FontFeature.tabularFigures()], // Biar font nggak goyang
+                    child: FittedBox( // Ditambahin FittedBox buat jaga-jaga biar teks nyesuaikan ukuran kalau kepanjangan
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        _formatWaktu(_stopwatch.elapsedMilliseconds),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 42, // Font dikecilin dikit dari 52
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                          letterSpacing: 2,
+                          fontFeatures: [FontFeature.tabularFigures()], 
+                        ),
                       ),
                     ),
                   ),

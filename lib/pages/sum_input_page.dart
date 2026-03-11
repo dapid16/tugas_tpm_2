@@ -21,11 +21,38 @@ class _SumInputPageState extends State<SumInputPage> {
   }
 
   void _hitungTotal() {
-    String input = _angkaController.text;
+    String input = _angkaController.text.trim();
+
+    // 1. ERROR HANDLING: Cek apakah kolom kosong
+    if (input.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Deret angkanya diisi dulu ya!'),
+          backgroundColor: Colors.red.shade600,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+      return; // Stop fungsi biar nggak ngitung
+    }
+
+    // 2. ERROR HANDLING: Validasi cuma boleh angka 0-9 pakai Regex
+    if (!RegExp(r'^[0-9]+$').hasMatch(input)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Input cuma boleh angka (0-9) tanpa spasi, titik, atau koma!'),
+          backgroundColor: Colors.red.shade600,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+      return;
+    }
+
+    // 3. Kalau aman, baru deh dipecah dan dihitung
     int total = 0;
     List<String> rincianList = [];
 
-    // Loop buat misahin tiap angka dan dijumlahin
     for (int i = 0; i < input.length; i++) {
       int? angka = int.tryParse(input[i]);
       if (angka != null) {
@@ -37,7 +64,6 @@ class _SumInputPageState extends State<SumInputPage> {
     setState(() {
       _hasilTotal = total.toString();
       _banyakDigit = rincianList.length.toString();
-      // Gabungin list pakai tanda tambah buat pamer UI
       _rincian = rincianList.isNotEmpty ? rincianList.join(' + ') : '-';
     });
   }

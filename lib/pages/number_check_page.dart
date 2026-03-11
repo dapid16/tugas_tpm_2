@@ -21,19 +21,40 @@ class _NumberCheckPageState extends State<NumberCheckPage> {
   }
 
   void _cekAngka() {
-    int? angka = int.tryParse(_angkaController.text);
+    String text = _angkaController.text.trim();
 
-    if (angka == null) {
-      setState(() {
-        _hasilGanjilGenap = 'Error';
-        _hasilPrima = 'Tidak Valid';
-      });
-      return; 
+    // 1. ERROR HANDLING: Cek apakah inputan kosong
+    if (text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Angkanya wajib diisi dulu ya!'),
+          backgroundColor: Colors.red.shade600,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+      return; // Stop fungsi biar nggak ngitung
     }
 
+    // 2. ERROR HANDLING: Cek apakah yang dimasukin beneran angka bulat (integer)
+    int? angka = int.tryParse(text);
+
+    if (angka == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Input harus berupa angka bulat yang valid (tanpa koma)!'),
+          backgroundColor: Colors.red.shade600,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+      return;
+    }
+
+    // 3. Kalau aman, lanjut hitung logika ganjil/genap dan prima
     String ganjilGenap = (angka % 2 == 0) ? 'Genap' : 'Ganjil';
     
-    String prima = 'Prima'; // Disingkat biar muat di kotak
+    String prima = 'Prima'; 
     if (angka <= 1) {
       prima = 'Bukan Prima'; 
     } else {

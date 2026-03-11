@@ -20,8 +20,39 @@ class _CalculatorPageState extends State<CalculatorPage> {
   }
 
   void _hitung(String operasi) {
-    double angka1 = double.tryParse(_angka1Controller.text) ?? 0;
-    double angka2 = double.tryParse(_angka2Controller.text) ?? 0;
+    String text1 = _angka1Controller.text.trim();
+    String text2 = _angka2Controller.text.trim();
+
+    // 2. ERROR HANDLING: Cek apakah inputan kosong
+    if (text1.isEmpty || text2.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Angka pertama dan kedua wajib diisi ya!'),
+          backgroundColor: Colors.red.shade600,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+      return; // Stop fungsi biar nggak ngitung
+    }
+
+    // 3. ERROR HANDLING: Cek apakah yang dimasukin beneran angka
+    double? angka1 = double.tryParse(text1);
+    double? angka2 = double.tryParse(text2);
+
+    if (angka1 == null || angka2 == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Input harus berupa angka yang valid!'),
+          backgroundColor: Colors.red.shade600,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+      return;
+    }
+
+    // 4. Kalau aman, baru deh dihitung
     double hasilHitung = 0;
 
     setState(() {
@@ -31,7 +62,6 @@ class _CalculatorPageState extends State<CalculatorPage> {
         hasilHitung = angka1 - angka2;
       }
 
-      // Trik biar angkanya rapi. Kalau hasilnya bulat, ilangin .0 di belakangnya
       if (hasilHitung == hasilHitung.toInt()) {
         _hasil = hasilHitung.toInt().toString();
       } else {
@@ -43,8 +73,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100, // Warna background seragam
-
+      backgroundColor: Colors.grey.shade100, 
 
       appBar: AppBar(
         title: const Text('Kalkulator',style: TextStyle(fontWeight: FontWeight.bold),),
@@ -84,11 +113,11 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   decoration: InputDecoration(
                     labelText: 'Angka Pertama',
                     hintText: '0',
-                    prefixIcon: const Icon(Icons.looks_one), // Icon angka 1
+                    prefixIcon: const Icon(Icons.looks_one), 
                     filled: true,
                     fillColor: Colors.grey.shade50,
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15), // Melengkung
+                      borderRadius: BorderRadius.circular(15), 
                       borderSide: BorderSide(color: Colors.grey.shade300),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -105,7 +134,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   decoration: InputDecoration(
                     labelText: 'Angka Kedua',
                     hintText: '0',
-                    prefixIcon: const Icon(Icons.looks_two), // Icon angka 2
+                    prefixIcon: const Icon(Icons.looks_two), 
                     filled: true,
                     fillColor: Colors.blueGrey.shade50,
                     enabledBorder: OutlineInputBorder(
@@ -122,7 +151,6 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 
                 Row(
                   children: [
-                    // Expanded bikin tombolnya otomatis bagi dua ruang yang sama besar
                     Expanded(
                       child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
@@ -139,12 +167,12 @@ class _CalculatorPageState extends State<CalculatorPage> {
                         label: const Text('Tambah', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                       ),
                     ),
-                    const SizedBox(width: 16), // Jarak antar tombol
+                    const SizedBox(width: 16),
                     Expanded(
                       child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
-                          backgroundColor: Colors.orange.shade600, // Warnanya beda
+                          backgroundColor: Colors.orange.shade600, 
                           foregroundColor: Colors.white,
                           elevation: 3,
                           shape: RoundedRectangleBorder(
@@ -159,7 +187,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   ],
                 ),
                 const SizedBox(height: 32),
-                const Divider(color: Colors.black12,), // Garis pembatas sebelum hasil
+                const Divider(color: Colors.black12,), 
                 const SizedBox(height: 24),
                 
                 const Text(
@@ -179,9 +207,9 @@ class _CalculatorPageState extends State<CalculatorPage> {
                     _hasil,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 48, // Angka hasil dibikin super gede
+                      fontSize: 48,
                       fontWeight: FontWeight.bold,
-                      color: Colors.green.shade700, // Warna ijo biar ngejreng
+                      color: Colors.green.shade700, 
                     ),
                   ),
                 ),

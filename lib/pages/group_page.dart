@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class GroupPage extends StatelessWidget {
   const GroupPage({super.key});
 
-  // Fungsi helper biar gampang nambahin anggota tanpa nulis kode panjang-panjang
   Widget _buildMemberCard(String name, String nim, IconData icon, Color color) {
     return Card(
       elevation: 5,
@@ -17,7 +16,7 @@ class GroupPage extends StatelessWidget {
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         leading: CircleAvatar(
           radius: 28,
-          backgroundColor: color.withValues(alpha: 0.15), // Latar belakang icon transparan dikit
+          backgroundColor: color.withValues(alpha: 0.15), 
           child: Icon(icon, size: 30, color: color),
         ),
         title: Text(
@@ -74,12 +73,6 @@ class GroupPage extends StatelessWidget {
                   ),
                   child: const Icon(Icons.groups, size: 45, color: Colors.white,),
                 ),
-                // const SizedBox(height: 16,),
-                // const Text(
-                //   'Kenalan dengan Kelompok Kami',
-                //   textAlign: TextAlign.center,
-                //   style: TextStyle(fontSize: 16, color: Colors.white70,fontWeight: FontWeight.w500,),
-                // ),
               ],
             ),
           ),
@@ -87,16 +80,6 @@ class GroupPage extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.only(top: 24, bottom: 24),
               children: [
-                // const Icon(Icons.groups, size: 80, color: Colors.blueAccent),
-                // const SizedBox(height: 16),
-                // const Text(
-                //   'Tim Developer',
-                //   textAlign: TextAlign.center,
-                //   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                // ),
-                // const SizedBox(height: 30),
-                
-                // Tinggal panggil fungsinya. Nama lu udah gue pasang di paling atas!
                 _buildMemberCard('Muhammad David Firdaus', '123230039', Icons.person, Colors.blue),
                 _buildMemberCard('Muhammad Abid Dewantoro', '123230093', Icons.person, Colors.orange),
                 _buildMemberCard('Alfonsus Sitanggang', '123230100', Icons.person, Colors.teal),

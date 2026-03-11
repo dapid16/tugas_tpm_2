@@ -23,9 +23,52 @@ class _PyramidPageState extends State<PyramidPage> {
   }
 
   void _hitungPiramida() {
-    double sisi = double.tryParse(_sisiController.text) ?? 0;
-    double tinggi = double.tryParse(_tinggiController.text) ?? 0; 
-    
+    String textSisi = _sisiController.text.trim();
+    String textTinggi = _tinggiController.text.trim();
+
+    // 1. ERROR HANDLING: Cek apakah ada kolom yang kosong
+    if (textSisi.isEmpty || textTinggi.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Panjang sisi dan tinggi piramida wajib diisi semua!'),
+          backgroundColor: Colors.red.shade600,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+      return; // Stop fungsi
+    }
+
+    // 2. ERROR HANDLING: Cek apakah inputan beneran angka
+    double? sisi = double.tryParse(textSisi);
+    double? tinggi = double.tryParse(textTinggi);
+
+    if (sisi == null || tinggi == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Input harus berupa angka yang valid!'),
+          backgroundColor: Colors.red.shade600,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+      return;
+    }
+
+    // 3. ERROR HANDLING EKSTRA: Cek apakah angkanya minus atau nol
+    if (sisi <= 0 || tinggi <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Ukuran bangun ruang harus lebih besar dari 0!'),
+          backgroundColor: Colors.red.shade600,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+      return;
+    }
+
+    // 4. Kalau semua aman, gas hitung rumusnya
     double tinggiSisiTegak = sqrt(pow(sisi / 2, 2) + pow(tinggi, 2));
 
     double luasAlas = sisi * sisi;
