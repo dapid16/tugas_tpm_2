@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tugas2mobilee/pages/javanese_day_calculator.dart';
 import 'package:tugas2mobilee/pages/pyramid_page.dart'; 
 import 'login_page.dart';
 import 'calculator_page.dart';
@@ -135,6 +136,15 @@ class HomePage extends StatelessWidget {
             ),
             const Divider(),
             ListTile(
+              leading: Icon(Icons.dark_mode_outlined, color: Colors.blue.shade700,),
+              title: const Text('Hitung Pasaran', style: TextStyle(fontWeight: FontWeight.w500),),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const WetonPage()));
+              },
+            ),
+            const Divider(),
+            ListTile(
               leading: const Icon(Icons.logout, color: Colors.red),
               title: const Text('Logout', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
               onTap: () {
@@ -175,6 +185,7 @@ class HomePage extends StatelessWidget {
                 _buildMenuCard(context, 'Total Angka', Icons.add_circle_outline, const SumInputPage()),
                 _buildMenuCard(context, 'Piramida', Icons.change_history, const PyramidPage()),
                 _buildMenuCard(context, 'Stopwatch', Icons.timer, const StopwatchPage()),
+                _buildMenuCard(context, 'Hitung Weton', Icons.mode_night_outlined, const WetonPage()),
               ],
             ),
           ),
