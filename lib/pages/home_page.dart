@@ -187,8 +187,6 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF0F4FF),
-      
-      // AppBar bawaan dibuang biar custom header lebih fleksibel
       drawer: Drawer(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -247,7 +245,7 @@ class HomePage extends StatelessWidget {
                   const Divider(height: 24),
                   _buildDrawerItem(context, icon: Icons.nights_stay_rounded, title: 'Hitung Pasaran', page: const WetonPage(), iconColor: const Color(0xFF6A1B9A)),
                   _buildDrawerItem(context, icon: Icons.cake_rounded, title: 'Hitung Umur', page: const AgeCalculatorPage(), iconColor: const Color(0xFF283593)),
-                  _buildDrawerItem(context, icon: Icons.mosque_rounded, title: 'Hijri Converter', page: const HijriConverterPage(), iconColor: const Color(0xFF1A237E)),
+                  _buildDrawerItem(context, icon: Icons.mosque_rounded, title: 'Hijriyah Convert', page: const HijriConverterPage(), iconColor: const Color(0xFF1A237E)),
                   const Divider(height: 24),
                 ],
               ),
@@ -282,15 +280,13 @@ class HomePage extends StatelessWidget {
 
       body: Column(
         children: [
-          // === STICKY CUSTOM HEADER SECTION ===
           Container(
             width: double.infinity,
             padding: EdgeInsets.only(
-              // Jarak atas nyesuain status bar (poni HP) ditambah dikit margin
               top: MediaQuery.of(context).padding.top + 16, 
               left: 24,
               right: 24,
-              bottom: 24, // Jarak bawah dibikin ngepas sama tulisan
+              bottom: 24, 
             ),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -306,7 +302,6 @@ class HomePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Tombol Menu (Garis Tiga)
                 Builder(
                   builder: (context) => GestureDetector(
                     onTap: () => Scaffold.of(context).openDrawer(),
@@ -321,7 +316,7 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 24), // Jarak dari tombol menu ke teks
+                const SizedBox(height: 24), 
                 const Text(
                   'Selamat datang 👋',
                   style: TextStyle(color: Colors.white60, fontSize: 13)
@@ -335,12 +330,10 @@ class HomePage extends StatelessWidget {
             ),
           ),
 
-          // === SCROLLABLE MENU SECTION ===
           Expanded(
             child: CustomScrollView(
               physics: const BouncingScrollPhysics(),
               slivers: [
-                // === GRID MENU ===
                 SliverPadding(
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
                   sliver: SliverGrid(
@@ -357,7 +350,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
 
-                // === HIJRI CONVERTER - FULL WIDTH ===
+                // HIJRIYAH CONVERT
                 SliverPadding(
                   padding: EdgeInsets.fromLTRB(20, 0, 20, MediaQuery.of(context).padding.bottom + 24),
                   sliver: SliverToBoxAdapter(

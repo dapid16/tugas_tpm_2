@@ -8,10 +8,8 @@ class NumberCheckPage extends StatefulWidget {
 }
 
 class _NumberCheckPageState extends State<NumberCheckPage> {
-  // ── Warna tema dark disamain sama Calculator & Home ─────────
   static const _bgPage = Color(0xFF0F0F1A);
   static const _bgCard = Color(0xFF1A1A2E);
-  // Warna aksen hijau sesuai dengan icon di HomePage
   static const _grad1 = Color(0xFF1B5E20); 
   static const _grad2 = Color(0xFF4CAF50);
 
@@ -110,7 +108,6 @@ class _NumberCheckPageState extends State<NumberCheckPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Icon Header (Gradient Green)
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -133,7 +130,7 @@ class _NumberCheckPageState extends State<NumberCheckPage> {
                 const SizedBox(height: 24),
                 
                 const Text(
-                  'Analisis Angka Bulat',
+                  'Analisis Angka',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
                 const SizedBox(height: 8),
@@ -156,7 +153,7 @@ class _NumberCheckPageState extends State<NumberCheckPage> {
                     hintStyle: const TextStyle(color: Colors.white24),
                     prefixIcon: const Icon(Icons.numbers_rounded, color: Colors.white54),
                     filled: true,
-                    fillColor: _bgPage, // Lebih gelap dari card biar nyentrik
+                    fillColor: _bgPage, 
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
                       borderSide: const BorderSide(color: Colors.white10),
@@ -169,13 +166,13 @@ class _NumberCheckPageState extends State<NumberCheckPage> {
                 ),
                 const SizedBox(height: 24),
                 
-                // Tombol Cek
+                // Button Cek
                 SizedBox(
                   width: double.infinity, 
                   height: 55,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.zero, // Biar gradient bisa full
+                      padding: EdgeInsets.zero, 
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
@@ -183,7 +180,6 @@ class _NumberCheckPageState extends State<NumberCheckPage> {
                       shadowColor: _grad2.withOpacity(0.4),
                     ),
                     onPressed: _cekAngka,
-                    // Trik bikin gradient di ElevatedButton
                     child: Ink(
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
@@ -225,7 +221,7 @@ class _NumberCheckPageState extends State<NumberCheckPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      // Kotak Kiri: Ganjil/Genap
+                      // Kotak Ganjil/Genap
                       Expanded(
                         child: Column(
                           children: [
@@ -237,7 +233,6 @@ class _NumberCheckPageState extends State<NumberCheckPage> {
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.w700,
-                                // Warnanya gue sesuaikan biar enak diliat di Dark Mode
                                 color: _hasilGanjilGenap == 'Genap' ? Colors.blue.shade400 : (_hasilGanjilGenap == 'Ganjil' ? Colors.orange.shade400 : Colors.white),
                               ),
                             ),
@@ -248,7 +243,7 @@ class _NumberCheckPageState extends State<NumberCheckPage> {
                       // Garis pemisah di tengah
                       Container(height: 50, width: 1, color: Colors.white10),
                       
-                      // Kotak Kanan: Prima
+                      // Kotak Prima
                       Expanded(
                         child: Column(
                           children: [
@@ -260,7 +255,6 @@ class _NumberCheckPageState extends State<NumberCheckPage> {
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.w700,
-                                // Warna disesuaikan buat Dark Mode
                                 color: _hasilPrima == 'Prima' ? Colors.green.shade400 : (_hasilPrima == 'Bukan Prima' ? Colors.red.shade400 : Colors.white),
                               ),
                             ),

@@ -25,7 +25,6 @@ class _LoginPageState extends State<LoginPage> {
     if (_usernameController.text == 'admin' && _passwordController.text == '123') {
       Navigator.pushReplacement(
         context,
-        // Kasih transisi fade biar masuk ke home page-nya mulus
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) => const HomePage(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -64,16 +63,15 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Background gradient ngikutin tema header HomePage lu
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Color(0xFF1A237E), // Deep Indigo
+              Color(0xFF1A237E), 
               Color(0xFF283593),
-              Color(0xFF3949AB), // Lighter Indigo
+              Color(0xFF3949AB), 
             ],
           ),
         ),
@@ -88,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                   elevation: 20,
                   shadowColor: Colors.black.withOpacity(0.4),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(32), // Makin melengkung makin modern
+                    borderRadius: BorderRadius.circular(32), 
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 40.0),
@@ -100,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.w800,
-                            color: const Color(0xFF1A237E), // Warna teks nyambung sama tema
+                            color: const Color(0xFF1A237E), 
                             letterSpacing: 0.5,
                           ),
                         ),
@@ -126,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                             hintStyle: TextStyle(color: Colors.grey.shade400),
                             prefixIcon: const Icon(Icons.person_rounded, color: Color(0xFF3949AB)),
                             filled: true,
-                            fillColor: const Color(0xFFF0F4FF), // Background field ngikutin warna bg HomePage
+                            fillColor: const Color(0xFFF0F4FF),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: const BorderSide(color: Colors.transparent),
@@ -175,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         const SizedBox(height: 40),
 
-                        // --- TOMBOL LOGIN ---
+                        // --- BUTTON LOGIN ---
                         SizedBox(
                           width: double.infinity,
                           height: 56,

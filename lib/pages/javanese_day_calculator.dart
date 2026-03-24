@@ -8,10 +8,8 @@ class WetonPage extends StatefulWidget {
 }
 
 class _WetonPageState extends State<WetonPage> {
-  // ── Warna tema dark disamain sama Calculator & Home ─────────
   static const _bgPage = Color(0xFF0F0F1A);
   static const _bgCard = Color(0xFF1A1A2E);
-  // Warna aksen Ungu/Purple sesuai icon di HomePage
   static const _grad1 = Color(0xFF4A148C); 
   static const _grad2 = Color(0xFF7B1FA2);
 
@@ -41,14 +39,13 @@ class _WetonPageState extends State<WetonPage> {
       firstDate: DateTime(1900), 
       lastDate: DateTime(2100),  
       builder: (context, child) {
-        // Kalender dibikin dark mode dengan aksen ungu
         return Theme(
           data: ThemeData.dark().copyWith(
             colorScheme: const ColorScheme.dark(
-              primary: _grad2, // Warna aksen utama (header, tombol pilih)
-              onPrimary: Colors.white, // Teks di atas warna utama
-              surface: _bgCard, // Warna background panel kalender
-              onSurface: Colors.white, // Teks tanggal
+              primary: _grad2,
+              onPrimary: Colors.white, 
+              surface: _bgCard, 
+              onSurface: Colors.white, 
             ),
             dialogBackgroundColor: _bgPage,
           ),
@@ -65,7 +62,6 @@ class _WetonPageState extends State<WetonPage> {
     }
   }
 
-  // Fungsi pembantu buat format nama bulan biar bahasa Indonesia
   String _formatTanggalIndo(DateTime date) {
     final List<String> namaBulan = [
       '', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
@@ -109,7 +105,6 @@ class _WetonPageState extends State<WetonPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Icon Header (Gradient Ungu)
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -143,7 +138,7 @@ class _WetonPageState extends State<WetonPage> {
                 ),
                 const SizedBox(height: 32),
 
-                // --- INFORMASI TANGGAL YANG DIPILIH ---
+                // --- INPUT TANGGAL YANG DIPILIH ---
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
@@ -183,7 +178,7 @@ class _WetonPageState extends State<WetonPage> {
                 ),
                 const SizedBox(height: 24),
 
-                // --- TOMBOL PILIH TANGGAL ---
+                // --- PILIH TANGGAL ---
                 SizedBox(
                   width: double.infinity,
                   height: 55,

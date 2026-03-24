@@ -10,30 +10,21 @@ class StopwatchPage extends StatefulWidget {
 }
 
 class _StopwatchPageState extends State<StopwatchPage> {
-  // ── Warna tema dark disamain sama Calculator & Home ─────────
   static const _bgPage = Color(0xFF0F0F1A);
   static const _bgCard = Color(0xFF1A1A2E);
-  // Warna aksen Teal/Cyan sesuai icon di HomePage
   static const _grad1 = Color(0xFF004D40); 
   static const _grad2 = Color(0xFF00695C);
   static const _accent = Color(0xFF1DE9B6); 
 
-  // ==========================================================
-  // 🔥 SETTINGAN DOSEN: UBAH ANGKA DI SINI LALU HOT RELOAD 🔥
-  // ==========================================================
-  final int _demoJam = 0;    // Contoh: ubah jadi 1
-  final int _demoMenit = 0; // Contoh: ubah jadi 59
-  final int _demoDetik = 0; // Contoh: ubah jadi 50
-  // ==========================================================
+  final int _demoJam = 0;    
+  final int _demoMenit = 0; 
+  final int _demoDetik = 0; 
 
   final Stopwatch _stopwatch = Stopwatch();
   Timer? _timer;
   final List<String> _laps = [];
 
-  // Konversi otomatis settingan dosen ke bentuk milliseconds
   int get _offsetMilliseconds => (_demoJam * 3600000) + (_demoMenit * 60000) + (_demoDetik * 1000);
-
-  // Waktu akhir yang ditampilin = Waktu Dosen + Waktu Stopwatch
   int get _totalMilliseconds => _offsetMilliseconds + _stopwatch.elapsedMilliseconds;
 
   void _startTimer() {
@@ -151,7 +142,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
                 ),
                 const SizedBox(height: 32),
                 
-                // --- KOTAK LAYAR DIGITAL (GLOW EFEK) ---
+                // --- KOTAK LAYAR DIGITAL ---
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 10),
@@ -170,7 +161,6 @@ class _StopwatchPageState extends State<StopwatchPage> {
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(
-                      // Ini otomatis nyesuain sama variabel "SETTINGAN DOSEN" di atas
                       _formatWaktu(_totalMilliseconds),
                       textAlign: TextAlign.center,
                       style: const TextStyle(
@@ -185,7 +175,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
                 ),
                 const SizedBox(height: 32),
                 
-                // --- BARIS TOMBOL START & STOP ---
+                // --- BARIS BUTTON START & STOP ---
                 Row(
                   children: [
                     Expanded(
@@ -231,7 +221,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
                 ),
                 const SizedBox(height: 16),
                 
-                // --- BARIS TOMBOL LAP & RESET ---
+                // --- BUTTON TOMBOL LAP & RESET ---
                 Row(
                   children: [
                     Expanded(
@@ -302,7 +292,6 @@ class _StopwatchPageState extends State<StopwatchPage> {
                   ],
                 ),
 
-                // --- UI LIST LAP (DARK THEME) ---
                 if (_laps.isNotEmpty) ...[
                   const SizedBox(height: 32),
                   const Divider(color: Colors.white10, height: 1),

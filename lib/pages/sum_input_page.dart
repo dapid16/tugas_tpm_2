@@ -8,10 +8,8 @@ class SumInputPage extends StatefulWidget {
 }
 
 class _SumInputPageState extends State<SumInputPage> {
-  // ── Warna tema dark disamain sama Calculator & Home ─────────
   static const _bgPage = Color(0xFF0F0F1A);
   static const _bgCard = Color(0xFF1A1A2E);
-  // Warna aksen oranye sesuai dengan icon di HomePage
   static const _grad1 = Color(0xFFE65100); 
   static const _grad2 = Color(0xFFFF9800);
 
@@ -87,7 +85,6 @@ class _SumInputPageState extends State<SumInputPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Icon Header (Gradient Orange)
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -110,7 +107,7 @@ class _SumInputPageState extends State<SumInputPage> {
                 const SizedBox(height: 24),
                 
                 const Text(
-                  'Analisis Teks Paragraf',
+                  'Analisis Teks',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
                 const SizedBox(height: 8),
@@ -121,9 +118,8 @@ class _SumInputPageState extends State<SumInputPage> {
                 ),
                 const SizedBox(height: 32),
                 
-                // --- INI TEXTFIELD YANG UDAH DIKUNCI TINGGINYA & BISA DI-SCROLL DALEMNYA ---
                 SizedBox(
-                  height: 150, // Kunci tingginya di sini
+                  height: 150, 
                   child: TextField(
                     controller: _inputController,
                     maxLines: null, 
@@ -138,7 +134,7 @@ class _SumInputPageState extends State<SumInputPage> {
                       hintText: 'Contoh: Pada suatu hari, hiduplah seorang programmer...',
                       hintStyle: const TextStyle(color: Colors.white24),
                       filled: true,
-                      fillColor: _bgPage, // Background textfield gelap
+                      fillColor: _bgPage, 
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
                         borderSide: const BorderSide(color: Colors.white10),
@@ -152,13 +148,13 @@ class _SumInputPageState extends State<SumInputPage> {
                 ),
                 const SizedBox(height: 24),
                 
-                // Tombol Hitung
+                // Button Hitung
                 SizedBox(
                   width: double.infinity,
                   height: 55,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.zero, // Biar gradient full
+                      padding: EdgeInsets.zero, 
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),

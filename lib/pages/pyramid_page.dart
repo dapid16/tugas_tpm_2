@@ -9,10 +9,8 @@ class PyramidPage extends StatefulWidget {
 }
 
 class _PyramidPageState extends State<PyramidPage> {
-  // ── Warna tema dark disamain sama Calculator & Home ─────────
   static const _bgPage = Color(0xFF0F0F1A);
   static const _bgCard = Color(0xFF1A1A2E);
-  // Warna aksen Pink/Magenta sesuai icon di HomePage
   static const _grad1 = Color(0xFF880E4F); 
   static const _grad2 = Color(0xFFD81B60);
 
@@ -132,7 +130,6 @@ class _PyramidPageState extends State<PyramidPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Icon Header (Gradient Pink/Magenta)
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -170,7 +167,7 @@ class _PyramidPageState extends State<PyramidPage> {
                 // --- DROPDOWN BUAT MILIH TIPE PIRAMIDA ---
                 DropdownButtonFormField<String>(
                   value: _tipePiramida,
-                  dropdownColor: _bgCard, // Biar background dropdown tetep dark
+                  dropdownColor: _bgCard, 
                   style: const TextStyle(color: Colors.white, fontSize: 16),
                   icon: const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.white54),
                   decoration: InputDecoration(
@@ -254,7 +251,7 @@ class _PyramidPageState extends State<PyramidPage> {
                 ),
                 const SizedBox(height: 24),
                 
-                // --- TOMBOL HITUNG ---
+                // --- BUTTON HITUNG ---
                 SizedBox(
                   width: double.infinity,
                   height: 55,

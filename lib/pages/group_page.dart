@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 class GroupPage extends StatelessWidget {
   const GroupPage({super.key});
 
-  // ── Warna tema dark disamain sama Calculator & Home ─────────
   static const _bgPage = Color(0xFF0F0F1A);
   static const _bgCard = Color(0xFF1A1A2E);
-  // Warna aksen Ungu sesuai icon di HomePage
   static const _grad1 = Color(0xFF4A148C);
   static const _grad2 = Color(0xFF6A1B9A);
 
@@ -88,7 +86,6 @@ class GroupPage extends StatelessWidget {
       body: Column(
         children: [
           const SizedBox(height: 10),
-          // Icon Header (Gradient Ungu)
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -121,13 +118,11 @@ class GroupPage extends StatelessWidget {
           ),
           const SizedBox(height: 32),
 
-          // List Anggota
           Expanded(
             child: ListView(
-              physics: const BouncingScrollPhysics(), // Efek mantul pas di-scroll
+              physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.only(bottom: 24),
               children: [
-                // Warnanya gue pakein .shade400 biar lebih cerah dan "nyala" di atas background gelap
                 _buildMemberCard('Muhammad David Firdaus', '123230039', Icons.person_rounded, Colors.blue.shade400),
                 _buildMemberCard('Muhammad Abid Dewantoro', '123230093', Icons.person_rounded, Colors.orange.shade400),
                 _buildMemberCard('Alfonsus Sitanggang', '123230100', Icons.person_rounded, Colors.teal.shade400),

@@ -11,7 +11,6 @@ class HijriConverterPage extends StatefulWidget {
 }
 
 class _HijriConverterPageState extends State<HijriConverterPage> {
-  // ── Warna tema disamain sama Calculator & Home ───────────────
   static const _bgPage = Color(0xFF0F0F1A);
   static const _bgCard = Color(0xFF1A1A2E);
   static const _grad1 = Color(0xFF1A237E);
@@ -53,7 +52,6 @@ class _HijriConverterPageState extends State<HijriConverterPage> {
       firstDate: DateTime(1900),
       lastDate: DateTime(2100),
       builder: (context, child) {
-        // Tema kalender disesuaikan jadi dark mode elegan
         return Theme(
           data: ThemeData.dark().copyWith(
             colorScheme: const ColorScheme.dark(
@@ -110,9 +108,9 @@ class _HijriConverterPageState extends State<HijriConverterPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // ==========================================
-            // CARD 1: JAM & KALENDER LIVE (Gradient Home)
-            // ==========================================
+            // =============================
+            // CARD 1: JAM & KALENDER LIVE 
+            // =============================
             Container(
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
@@ -137,7 +135,6 @@ class _HijriConverterPageState extends State<HijriConverterPage> {
                     style: TextStyle(color: Colors.white60, fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(height: 12),
-                  // Jam Live
                   Text(
                     _formatTime(currentTime),
                     style: const TextStyle(
