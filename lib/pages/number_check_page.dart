@@ -8,9 +8,15 @@ class NumberCheckPage extends StatefulWidget {
 }
 
 class _NumberCheckPageState extends State<NumberCheckPage> {
+  // ── Warna tema dark disamain sama Calculator & Home ─────────
+  static const _bgPage = Color(0xFF0F0F1A);
+  static const _bgCard = Color(0xFF1A1A2E);
+  // Warna aksen hijau sesuai dengan icon di HomePage
+  static const _grad1 = Color(0xFF1B5E20); 
+  static const _grad2 = Color(0xFF4CAF50);
+
   final _angkaController = TextEditingController();
   
-  // Kasih nilai default strip biar layarnya kelihatan bersih pas baru dibuka
   String _hasilGanjilGenap = '-';
   String _hasilPrima = '-';
 
@@ -23,7 +29,6 @@ class _NumberCheckPageState extends State<NumberCheckPage> {
   void _cekAngka() {
     String text = _angkaController.text.trim();
 
-    // 1. ERROR HANDLING: Cek apakah inputan kosong
     if (text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -33,10 +38,9 @@ class _NumberCheckPageState extends State<NumberCheckPage> {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
       );
-      return; // Stop fungsi biar nggak ngitung
+      return;
     }
 
-    // 2. ERROR HANDLING: Cek apakah yang dimasukin beneran angka bulat (integer)
     int? angka = int.tryParse(text);
 
     if (angka == null) {
@@ -51,7 +55,6 @@ class _NumberCheckPageState extends State<NumberCheckPage> {
       return;
     }
 
-    // 3. Kalau aman, lanjut hitung logika ganjil/genap dan prima
     String ganjilGenap = (angka % 2 == 0) ? 'Genap' : 'Ganjil';
     
     String prima = 'Prima'; 
@@ -75,98 +78,149 @@ class _NumberCheckPageState extends State<NumberCheckPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100, // Background seragam
+      backgroundColor: _bgPage,
       appBar: AppBar(
-        title: const Text('Cek Ganjil & Prima', style: TextStyle(fontWeight: FontWeight.bold),),
-        backgroundColor: Colors.blue.shade700,
-        foregroundColor: Colors.white,
+        backgroundColor: _bgPage,
         elevation: 0,
+        leading: IconButton(
+          icon: Container(
+            width: 36, height: 36,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.07),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white60, size: 16),
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text('Cek Ganjil & Prima',
+          style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w600)),
         centerTitle: true,
       ),
       
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Card(
-          elevation: 5,
-          shadowColor: Colors.blue.shade100,
-          color: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
-          ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+        child: Material(
+          color: _bgCard,
+          borderRadius: BorderRadius.circular(28),
+          elevation: 8,
+          shadowColor: Colors.black45,
           child: Padding(
-            padding: const EdgeInsets.all(32.0),
+            padding: const EdgeInsets.all(28.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Icon ungu buat pemanis
+                // Icon Header (Gradient Green)
                 Container(
-                  padding: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.purple.shade50,
                     shape: BoxShape.circle,
+                    gradient: const LinearGradient(
+                      colors: [_grad1, _grad2],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: _grad2.withOpacity(0.3),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
                   ),
-                  child: Icon(Icons.psychology, size: 60, color: Colors.purple.shade600)
+                  child: const Icon(Icons.tag_rounded, size: 48, color: Colors.white),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 24),
                 
-                Text(
+                const Text(
                   'Analisis Angka Bulat',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey.shade800),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 8),
+                const Text(
+                  'Cek apakah angka tersebut ganjil/genap dan termasuk bilangan prima atau tidak.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 13, color: Colors.white54),
+                ),
+                const SizedBox(height: 32),
                 
+                // Input Field
                 TextField(
                   controller: _angkaController,
                   keyboardType: TextInputType.number,
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
                   decoration: InputDecoration(
                     labelText: 'Masukkan Angka',
+                    labelStyle: const TextStyle(color: Colors.white54),
                     hintText: 'Contoh : 7',
-                    prefixIcon: const Icon(Icons.tag), // Icon hashtag
+                    hintStyle: const TextStyle(color: Colors.white24),
+                    prefixIcon: const Icon(Icons.numbers_rounded, color: Colors.white54),
                     filled: true,
-                    fillColor: Colors.grey.shade50,
+                    fillColor: _bgPage, // Lebih gelap dari card biar nyentrik
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: const BorderSide(color: Colors.white10),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(color: Colors.purple.shade400),
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: const BorderSide(color: _grad2, width: 2),
                     ),
                   ),
                 ),
                 const SizedBox(height: 24),
                 
+                // Tombol Cek
                 SizedBox(
                   width: double.infinity, 
                   height: 55,
-                  child: ElevatedButton.icon(
+                  child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple.shade600,
-                      foregroundColor: Colors.white, // Tema ungu
-                      elevation: 3,
+                      padding: EdgeInsets.zero, // Biar gradient bisa full
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(16),
                       ),
+                      elevation: 4,
+                      shadowColor: _grad2.withOpacity(0.4),
                     ),
                     onPressed: _cekAngka,
-                    icon: const Icon(Icons.search, color: Colors.white),
-                    label: const Text(
-                      'Cek Sekarang',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1),
+                    // Trik bikin gradient di ElevatedButton
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [_grad1, _grad2],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.search_rounded, color: Colors.white, size: 20),
+                            SizedBox(width: 8),
+                            Text(
+                              'Cek Sekarang',
+                              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700, letterSpacing: 0.5),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 32),
-                const Divider(color: Colors.black12,), 
-                const SizedBox(height: 24),
+                const Divider(color: Colors.white10, height: 1), 
+                const SizedBox(height: 32),
                 
-                // Ini layout kiri-kanan buat nampilin hasil biar rapi
+                // Kotak Hasil
                 Container(
-                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 10),
                   decoration: BoxDecoration(
-                    color: Colors.purple.shade50,
+                    color: _grad2.withOpacity(0.08),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.purple.shade100),
+                    border: Border.all(color: _grad2.withOpacity(0.2)),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -175,16 +229,16 @@ class _NumberCheckPageState extends State<NumberCheckPage> {
                       Expanded(
                         child: Column(
                           children: [
-                            Text('Status', style: TextStyle(color: Colors.purple.shade300, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
-                            const SizedBox(height: 8),
+                            const Text('STATUS', style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+                            const SizedBox(height: 12),
                             Text(
                               _hasilGanjilGenap,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                // Warnanya ganti-ganti tergantung hasil
-                                color: _hasilGanjilGenap == 'Genap' ? Colors.blue.shade700 : (_hasilGanjilGenap == 'Ganjil' ? Colors.orange.shade700 : Colors.red),
+                                fontSize: 22,
+                                fontWeight: FontWeight.w700,
+                                // Warnanya gue sesuaikan biar enak diliat di Dark Mode
+                                color: _hasilGanjilGenap == 'Genap' ? Colors.blue.shade400 : (_hasilGanjilGenap == 'Ganjil' ? Colors.orange.shade400 : Colors.white),
                               ),
                             ),
                           ],
@@ -192,21 +246,22 @@ class _NumberCheckPageState extends State<NumberCheckPage> {
                       ),
                       
                       // Garis pemisah di tengah
-                      Container(height: 40, width: 1, color: Colors.purple.shade200),
+                      Container(height: 50, width: 1, color: Colors.white10),
                       
                       // Kotak Kanan: Prima
                       Expanded(
                         child: Column(
                           children: [
-                            Text('JENIS', style: TextStyle(color: Colors.purple.shade300, fontWeight: FontWeight.bold, letterSpacing: 1)),
-                            const SizedBox(height: 8),
+                            const Text('JENIS', style: TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+                            const SizedBox(height: 12),
                             Text(
                               _hasilPrima,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: _hasilPrima == 'Prima' ? Colors.green.shade700 : Colors.red.shade600,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w700,
+                                // Warna disesuaikan buat Dark Mode
+                                color: _hasilPrima == 'Prima' ? Colors.green.shade400 : (_hasilPrima == 'Bukan Prima' ? Colors.red.shade400 : Colors.white),
                               ),
                             ),
                           ],

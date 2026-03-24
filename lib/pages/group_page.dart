@@ -3,35 +3,58 @@ import 'package:flutter/material.dart';
 class GroupPage extends StatelessWidget {
   const GroupPage({super.key});
 
-  Widget _buildMemberCard(String name, String nim, IconData icon, Color color) {
-    return Card(
-      elevation: 5,
-      shadowColor: Colors.blue.shade100,
-      color: Colors.white,
+  // ── Warna tema dark disamain sama Calculator & Home ─────────
+  static const _bgPage = Color(0xFF0F0F1A);
+  static const _bgCard = Color(0xFF1A1A2E);
+  // Warna aksen Ungu sesuai icon di HomePage
+  static const _grad1 = Color(0xFF4A148C);
+  static const _grad2 = Color(0xFF6A1B9A);
+
+  Widget _buildMemberCard(String name, String nim, IconData icon, Color accentColor) {
+    return Container(
       margin: const EdgeInsets.only(bottom: 16, left: 24, right: 24),
-      shape: RoundedRectangleBorder(
+      decoration: BoxDecoration(
+        color: _bgCard,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: accentColor.withOpacity(0.3), width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: accentColor.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
       ),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        leading: CircleAvatar(
-          radius: 28,
-          backgroundColor: color.withValues(alpha: 0.15), 
-          child: Icon(icon, size: 30, color: color),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        leading: Container(
+          width: 52,
+          height: 52,
+          decoration: BoxDecoration(
+            color: accentColor.withOpacity(0.15),
+            shape: BoxShape.circle,
+            border: Border.all(color: accentColor.withOpacity(0.5)),
+          ),
+          child: Icon(icon, size: 28, color: accentColor),
         ),
         title: Text(
           name,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey.shade800),
+          style: const TextStyle(
+            fontSize: 17, 
+            fontWeight: FontWeight.bold, 
+            color: Colors.white, 
+            letterSpacing: 0.5
+          ),
         ),
         subtitle: Padding(
-          padding: const EdgeInsets.only(top: 8.0),
+          padding: const EdgeInsets.only(top: 6.0),
           child: Row(
             children: [
-              Icon(Icons.badge, size: 16, color: Colors.grey.shade500,),
-              const SizedBox(width: 6,),
+              Icon(Icons.badge_rounded, size: 16, color: accentColor.withOpacity(0.8)),
+              const SizedBox(width: 6),
               Text(
                 'NIM: $nim',
-                style: TextStyle(color: Colors.grey.shade600, fontWeight: FontWeight.w600),
+                style: const TextStyle(color: Colors.white70, fontWeight: FontWeight.w600, fontSize: 13),
               ),
             ],
           ),
@@ -43,46 +66,71 @@ class GroupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: _bgPage,
       appBar: AppBar(
-        title: const Text('Daftar Anggota Kelompok', style: TextStyle(fontWeight: FontWeight.bold),),
-        backgroundColor: Colors.blue.shade700,
-        foregroundColor: Colors.white,
+        backgroundColor: _bgPage,
         elevation: 0,
+        leading: IconButton(
+          icon: Container(
+            width: 36, height: 36,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.07),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white60, size: 16),
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text('Daftar Kelompok',
+          style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w600)),
         centerTitle: true,
       ),
       body: Column(
         children: [
+          const SizedBox(height: 10),
+          // Icon Header (Gradient Ungu)
           Container(
-            width: double.infinity,
-            padding: EdgeInsets.only(top: 10, bottom: 30),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.blue.shade700,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
+              shape: BoxShape.circle,
+              gradient: const LinearGradient(
+                colors: [_grad1, _grad2],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
-            ),
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.groups, size: 45, color: Colors.white,),
+              boxShadow: [
+                BoxShadow(
+                  color: _grad2.withOpacity(0.4),
+                  blurRadius: 20,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
+            child: const Icon(Icons.groups_rounded, size: 48, color: Colors.white),
           ),
+          const SizedBox(height: 24),
+          
+          const Text(
+            'Anggota Tim',
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Informasi anggota kelompok penyusun project.',
+            style: TextStyle(fontSize: 13, color: Colors.white54),
+          ),
+          const SizedBox(height: 32),
+
+          // List Anggota
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.only(top: 24, bottom: 24),
+              physics: const BouncingScrollPhysics(), // Efek mantul pas di-scroll
+              padding: const EdgeInsets.only(bottom: 24),
               children: [
-                _buildMemberCard('Muhammad David Firdaus', '123230039', Icons.person, Colors.blue),
-                _buildMemberCard('Muhammad Abid Dewantoro', '123230093', Icons.person, Colors.orange),
-                _buildMemberCard('Alfonsus Sitanggang', '123230100', Icons.person, Colors.teal),
+                // Warnanya gue pakein .shade400 biar lebih cerah dan "nyala" di atas background gelap
+                _buildMemberCard('Muhammad David Firdaus', '123230039', Icons.person_rounded, Colors.blue.shade400),
+                _buildMemberCard('Muhammad Abid Dewantoro', '123230093', Icons.person_rounded, Colors.orange.shade400),
+                _buildMemberCard('Alfonsus Sitanggang', '123230100', Icons.person_rounded, Colors.teal.shade400),
               ],
             ),
           ),

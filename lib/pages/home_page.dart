@@ -13,334 +13,356 @@ import 'group_page.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  Widget _buildMenuCard(
-    BuildContext context,
-    String title,
-    IconData icon,
-    Widget page,
-  ) {
-    return Card(
-      elevation: 4,
-      shadowColor: Colors.blue.shade100,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+  static final List<_MenuData> _menus = [
+    _MenuData('Daftar Kelompok', Icons.group_rounded, const Color(0xFFEDE7F6), const Color(0xFF6A1B9A), const GroupPage(), 'Info anggota'),
+    _MenuData('Kalkulator', Icons.calculate_rounded, const Color(0xFFE3F2FD), const Color(0xFF1565C0), const CalculatorPage(), 'Hitung cepat'),
+    _MenuData('Ganjil & Prima', Icons.tag_rounded, const Color(0xFFE8F5E9), const Color(0xFF2E7D32), const NumberCheckPage(), 'Cek bilangan'),
+    _MenuData('Total Angka', Icons.add_circle_outline_rounded, const Color(0xFFFFF3E0), const Color(0xFFE65100), const SumInputPage(), 'Jumlah input'),
+    _MenuData('Piramida', Icons.change_history_rounded, const Color(0xFFFCE4EC), const Color(0xFFAD1457), const PyramidPage(), 'Pola segitiga'),
+    _MenuData('Stopwatch', Icons.timer_rounded, const Color(0xFFE0F7FA), const Color(0xFF00695C), const StopwatchPage(), 'Pengukur waktu'),
+    _MenuData('Hitung Weton', Icons.nights_stay_rounded, const Color(0xFFF3E5F5), const Color(0xFF6A1B9A), const WetonPage(), 'Hari Jawa'),
+    _MenuData('Hitung Umur', Icons.cake_rounded, const Color(0xFFE8EAF6), const Color(0xFF283593), const AgeCalculatorPage(), 'Kalkulator usia'),
+  ];
+
+  Widget _buildMenuCard(BuildContext context, _MenuData menu) {
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
       child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => page),
-          );
-        },
-        borderRadius: BorderRadius.circular(15),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.blue.shade50,
-                shape: BoxShape.circle,
+        onTap: () => Navigator.push(context, _fadeRoute(menu.page)),
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: menu.iconColor.withOpacity(0.08),
+                blurRadius: 16,
+                offset: const Offset(0, 6),
               ),
-              child: Icon(icon, size: 50, color: Colors.blue),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey.shade800,
+            ],
+          ),
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 46,
+                height: 46,
+                decoration: BoxDecoration(
+                  color: menu.iconBg,
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(menu.icon, color: menu.iconColor, size: 24),
               ),
-            ),
-          ],
+              const SizedBox(height: 12),
+              Text(
+                menu.title,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF1A237E),
+                  height: 1.2,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                menu.subtitle,
+                style: TextStyle(
+                  fontSize: 11,
+                  color: Colors.grey.shade500,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _buildHijriCard(BuildContext context) {
+    return Material(
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
+        onTap: () => Navigator.push(context, _fadeRoute(const HijriConverterPage())),
+        borderRadius: BorderRadius.circular(20),
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            gradient: const LinearGradient(
+              colors: [Color(0xFF1A237E), Color(0xFF3949AB)],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF1A237E).withOpacity(0.3),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+          child: Row(
+            children: [
+              Container(
+                width: 46,
+                height: 46,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.18),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Icon(Icons.mosque_rounded, color: Colors.white, size: 24),
+              ),
+              const SizedBox(width: 16),
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Hijri Converter',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      'Konversi kalender Hijriyah',
+                      style: TextStyle(
+                        color: Colors.white60,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.arrow_forward_ios_rounded, color: Colors.white38, size: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDrawerItem(BuildContext context, {
+    required IconData icon,
+    required String title,
+    required Widget page,
+    Color? iconColor,
+  }) {
+    final color = iconColor ?? const Color(0xFF3949AB);
+    return ListTile(
+      leading: Container(
+        width: 36,
+        height: 36,
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Icon(icon, color: color, size: 18),
+      ),
+      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
+      onTap: () {
+        Navigator.pop(context);
+        Navigator.push(context, _fadeRoute(page));
+      },
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+    );
+  }
+
+  PageRoute _fadeRoute(Widget page) {
+    return PageRouteBuilder(
+      pageBuilder: (_, __, ___) => page,
+      transitionsBuilder: (_, anim, __, child) =>
+          FadeTransition(opacity: anim, child: child),
+      transitionDuration: const Duration(milliseconds: 200),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
-
-      appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Menu Utama',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-          ],
-        ),
-        backgroundColor: Colors.blue.shade700,
-        foregroundColor: Colors.white,
-        elevation: 0,
-      ),
-
+      backgroundColor: const Color(0xFFF0F4FF),
+      
+      // AppBar bawaan dibuang biar custom header lebih fleksibel
       drawer: Drawer(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(28),
+            bottomRight: Radius.circular(28),
+          ),
+        ),
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(
+              padding: EdgeInsets.zero,
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.blue.shade800, Colors.blue.shade400],
+                  colors: [Color(0xFF1A237E), Color(0xFF3949AB)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
+                borderRadius: BorderRadius.only(topRight: Radius.circular(28)),
               ),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Icon(Icons.account_circle, size: 60, color: Colors.white),
-                  SizedBox(height: 10),
-                  Text(
-                    'Menu Navigasi',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      width: 52,
+                      height: 52,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.account_circle_rounded, size: 36, color: Colors.white),
                     ),
-                  ),
+                    const SizedBox(height: 10),
+                    const Text('Menu Navigasi',
+                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700)),
+                    const Text('Pilih fitur yang diinginkan',
+                      style: TextStyle(color: Colors.white60, fontSize: 12)),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Column(
+                children: [
+                  _buildDrawerItem(context, icon: Icons.group_rounded, title: 'Daftar Kelompok', page: const GroupPage(), iconColor: const Color(0xFF6A1B9A)),
+                  _buildDrawerItem(context, icon: Icons.calculate_rounded, title: 'Kalkulator', page: const CalculatorPage(), iconColor: const Color(0xFF1565C0)),
+                  _buildDrawerItem(context, icon: Icons.tag_rounded, title: 'Ganjil Genap & Prima', page: const NumberCheckPage(), iconColor: const Color(0xFF2E7D32)),
+                  _buildDrawerItem(context, icon: Icons.add_circle_outline_rounded, title: 'Jumlah Total Angka', page: const SumInputPage(), iconColor: const Color(0xFFE65100)),
+                  _buildDrawerItem(context, icon: Icons.change_history_rounded, title: 'Piramida', page: const PyramidPage(), iconColor: const Color(0xFFAD1457)),
+                  _buildDrawerItem(context, icon: Icons.timer_rounded, title: 'Stopwatch', page: const StopwatchPage(), iconColor: const Color(0xFF00695C)),
+                  const Divider(height: 24),
+                  _buildDrawerItem(context, icon: Icons.nights_stay_rounded, title: 'Hitung Pasaran', page: const WetonPage(), iconColor: const Color(0xFF6A1B9A)),
+                  _buildDrawerItem(context, icon: Icons.cake_rounded, title: 'Hitung Umur', page: const AgeCalculatorPage(), iconColor: const Color(0xFF283593)),
+                  _buildDrawerItem(context, icon: Icons.mosque_rounded, title: 'Hijri Converter', page: const HijriConverterPage(), iconColor: const Color(0xFF1A237E)),
+                  const Divider(height: 24),
                 ],
               ),
             ),
-            ListTile(
-              leading: Icon(Icons.group, color: Colors.blue.shade700),
-              title: const Text(
-                'Daftar Kelompok',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const GroupPage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.calculate, color: Colors.blue.shade700),
-              title: const Text(
-                'Kalkulator',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CalculatorPage(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: ListTile(
+                leading: Container(
+                  width: 36, height: 36,
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade50,
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.numbers, color: Colors.blue.shade700),
-              title: const Text(
-                'Ganjil Genap & Prima',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const NumberCheckPage(),
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.add_circle_outline,
-                color: Colors.blue.shade700,
-              ),
-              title: const Text(
-                'Jumlah Total Angka',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SumInputPage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.change_history, color: Colors.blue.shade700),
-              title: const Text(
-                'Piramida',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const PyramidPage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.timer, color: Colors.blue.shade700),
-              title: const Text(
-                'Stopwatch',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const StopwatchPage(),
-                  ),
-                );
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: Icon(
-                Icons.dark_mode_outlined,
-                color: Colors.blue.shade700,
-              ),
-              title: const Text(
-                'Hitung Pasaran',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const WetonPage()),
-                );
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: Icon(
-                Icons.dark_mode_outlined,
-                color: Colors.blue.shade700,
-              ),
-              title: const Text(
-                'Hitung Umur',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AgeCalculatorPage(),
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.dark_mode_outlined,
-                color: Colors.blue.shade700,
-              ),
-              title: const Text(
-                'Hijri Converter',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HijriConverterPage(),
-                  ),
-                );
-              },
-            ),
-            const Divider(),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.logout, color: Colors.red),
-              title: const Text(
-                'Logout',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold,
+                  child: Icon(Icons.logout_rounded, color: Colors.red.shade600, size: 18),
                 ),
+                title: Text('Logout', style: TextStyle(color: Colors.red.shade600, fontWeight: FontWeight.w600, fontSize: 14)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+                onTap: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoginPage()),
+                    (route) => false,
+                  );
+                },
               ),
-              onTap: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
-                  (Route<dynamic> route) => false,
-                );
-              },
             ),
+            const SizedBox(height: 16),
           ],
         ),
       ),
 
-      body: Stack(
+      body: Column(
         children: [
+          // === STICKY CUSTOM HEADER SECTION ===
           Container(
-            height: 120,
-            decoration: BoxDecoration(
-              color: Colors.blue.shade700,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
+            width: double.infinity,
+            padding: EdgeInsets.only(
+              // Jarak atas nyesuain status bar (poni HP) ditambah dikit margin
+              top: MediaQuery.of(context).padding.top + 16, 
+              left: 24,
+              right: 24,
+              bottom: 24, // Jarak bawah dibikin ngepas sama tulisan
+            ),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF1A237E), Color(0xFF283593), Color(0xFF3949AB)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(32),
+                bottomRight: Radius.circular(32),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: GridView.count(
-              crossAxisCount: 2,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              childAspectRatio: 1.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildMenuCard(
-                  context,
-                  'Daftar Kelompok',
-                  Icons.group,
-                  const GroupPage(),
+                // Tombol Menu (Garis Tiga)
+                Builder(
+                  builder: (context) => GestureDetector(
+                    onTap: () => Scaffold.of(context).openDrawer(),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(Icons.menu_rounded, color: Colors.white, size: 22),
+                    ),
+                  ),
                 ),
-                _buildMenuCard(
-                  context,
-                  'Kalkulator',
-                  Icons.calculate,
-                  const CalculatorPage(),
+                const SizedBox(height: 24), // Jarak dari tombol menu ke teks
+                const Text(
+                  'Selamat datang 👋',
+                  style: TextStyle(color: Colors.white60, fontSize: 13)
                 ),
-                _buildMenuCard(
-                  context,
-                  'Ganjil & Prima',
-                  Icons.numbers,
-                  const NumberCheckPage(),
+                const SizedBox(height: 4),
+                const Text(
+                  'Menu Utama',
+                  style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.w800)
                 ),
-                _buildMenuCard(
-                  context,
-                  'Total Angka',
-                  Icons.add_circle_outline,
-                  const SumInputPage(),
+              ],
+            ),
+          ),
+
+          // === SCROLLABLE MENU SECTION ===
+          Expanded(
+            child: CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                // === GRID MENU ===
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
+                  sliver: SliverGrid(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) => _buildMenuCard(context, _menus[index]),
+                      childCount: _menus.length,
+                    ),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 1.05,
+                    ),
+                  ),
                 ),
-                _buildMenuCard(
-                  context,
-                  'Piramida',
-                  Icons.change_history,
-                  const PyramidPage(),
-                ),
-                _buildMenuCard(
-                  context,
-                  'Stopwatch',
-                  Icons.timer,
-                  const StopwatchPage(),
-                ),
-                _buildMenuCard(
-                  context,
-                  'Hitung Weton',
-                  Icons.mode_night_outlined,
-                  const WetonPage(),
+
+                // === HIJRI CONVERTER - FULL WIDTH ===
+                SliverPadding(
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, MediaQuery.of(context).padding.bottom + 24),
+                  sliver: SliverToBoxAdapter(
+                    child: _buildHijriCard(context),
+                  ),
                 ),
               ],
             ),
@@ -349,4 +371,16 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+}
+
+// Data class untuk menu item
+class _MenuData {
+  final String title;
+  final IconData icon;
+  final Color iconBg;
+  final Color iconColor;
+  final Widget page;
+  final String subtitle;
+
+  const _MenuData(this.title, this.icon, this.iconBg, this.iconColor, this.page, this.subtitle);
 }

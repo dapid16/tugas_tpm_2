@@ -9,9 +9,17 @@ class PyramidPage extends StatefulWidget {
 }
 
 class _PyramidPageState extends State<PyramidPage> {
+  // ── Warna tema dark disamain sama Calculator & Home ─────────
+  static const _bgPage = Color(0xFF0F0F1A);
+  static const _bgCard = Color(0xFF1A1A2E);
+  // Warna aksen Pink/Magenta sesuai icon di HomePage
+  static const _grad1 = Color(0xFF880E4F); 
+  static const _grad2 = Color(0xFFD81B60);
+
   final _sisiController = TextEditingController();
   final _tinggiController = TextEditingController();
 
+  String _tipePiramida = 'Segi Empat'; 
   String _hasilVolume = '0';
   String _hasilLuas = '0';
 
@@ -26,7 +34,6 @@ class _PyramidPageState extends State<PyramidPage> {
     String textSisi = _sisiController.text.trim();
     String textTinggi = _tinggiController.text.trim();
 
-    // 1. ERROR HANDLING: Cek apakah ada kolom yang kosong
     if (textSisi.isEmpty || textTinggi.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -36,10 +43,9 @@ class _PyramidPageState extends State<PyramidPage> {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
       );
-      return; // Stop fungsi
+      return; 
     }
 
-    // 2. ERROR HANDLING: Cek apakah inputan beneran angka
     double? sisi = double.tryParse(textSisi);
     double? tinggi = double.tryParse(textTinggi);
 
@@ -55,7 +61,6 @@ class _PyramidPageState extends State<PyramidPage> {
       return;
     }
 
-    // 3. ERROR HANDLING EKSTRA: Cek apakah angkanya minus atau nol
     if (sisi <= 0 || tinggi <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -68,15 +73,26 @@ class _PyramidPageState extends State<PyramidPage> {
       return;
     }
 
-    // 4. Kalau semua aman, gas hitung rumusnya
-    double tinggiSisiTegak = sqrt(pow(sisi / 2, 2) + pow(tinggi, 2));
+    double luasAlas = 0;
+    double luasPermukaan = 0;
+    double volume = 0;
 
-    double luasAlas = sisi * sisi;
-    double luas = luasAlas + (4 * (0.5 * sisi * tinggiSisiTegak));
-    double volume = luasAlas * tinggi * (1 / 3);
+    if (_tipePiramida == 'Segi Empat') {
+      luasAlas = sisi * sisi;
+      double tinggiSisiTegak = sqrt(pow(sisi / 2, 2) + pow(tinggi, 2));
+      luasPermukaan = luasAlas + (4 * (0.5 * sisi * tinggiSisiTegak));
+      volume = (1 / 3) * luasAlas * tinggi;
+
+    } else if (_tipePiramida == 'Segitiga') {
+      luasAlas = (sqrt(3) / 4) * pow(sisi, 2);
+      double apotemaAlas = (sisi * sqrt(3)) / 6;
+      double tinggiSisiTegak = sqrt(pow(apotemaAlas, 2) + pow(tinggi, 2));
+      luasPermukaan = luasAlas + (3 * (0.5 * sisi * tinggiSisiTegak));
+      volume = (1 / 3) * luasAlas * tinggi;
+    }
 
     setState(() {
-      _hasilLuas = luas.toStringAsFixed(2);
+      _hasilLuas = luasPermukaan.toStringAsFixed(2);
       _hasilVolume = volume.toStringAsFixed(2); 
     });
   }
@@ -84,112 +100,211 @@ class _PyramidPageState extends State<PyramidPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: _bgPage,
       appBar: AppBar(
-        title: const Text('Luas & Volume Piramida', style: TextStyle(fontWeight: FontWeight.bold),),
-        backgroundColor: Colors.blue.shade700,
-        foregroundColor: Colors.white,
+        backgroundColor: _bgPage,
         elevation: 0,
+        leading: IconButton(
+          icon: Container(
+            width: 36, height: 36,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.07),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white60, size: 16),
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text('Luas & Volume Piramida',
+          style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w600)),
         centerTitle: true,
       ),
       
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Card(
-          elevation: 5,
-          shadowColor: Colors.blue.shade100,
-          color: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
-          ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+        child: Material(
+          color: _bgCard,
+          borderRadius: BorderRadius.circular(28),
+          elevation: 8,
+          shadowColor: Colors.black45,
           child: Padding(
-            padding: const EdgeInsets.all(32.0),
+            padding: const EdgeInsets.all(28.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // Icon Header (Gradient Pink/Magenta)
                 Container(
-                  padding: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.orange.shade50,
                     shape: BoxShape.circle,
+                    gradient: const LinearGradient(
+                      colors: [_grad1, _grad2],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: _grad1.withOpacity(0.4),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
                   ),
-                  child: Icon(Icons.change_history, size: 80, color: Colors.orange),
-                ),
-                const SizedBox(height: 20),
-                
-                Text(
-                  'Kalkulator Limas Segi Empat',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey.shade800),
+                  child: const Icon(Icons.change_history_rounded, size: 48, color: Colors.white),
                 ),
                 const SizedBox(height: 24),
                 
+                Text(
+                  'Kalkulator Limas $_tipePiramida',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Hitung dimensi luas permukaan dan volume dari bangun ruang piramida.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 13, color: Colors.white54),
+                ),
+                const SizedBox(height: 32),
+
+                // --- DROPDOWN BUAT MILIH TIPE PIRAMIDA ---
+                DropdownButtonFormField<String>(
+                  value: _tipePiramida,
+                  dropdownColor: _bgCard, // Biar background dropdown tetep dark
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                  icon: const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.white54),
+                  decoration: InputDecoration(
+                    labelText: 'Pilih Jenis Piramida',
+                    labelStyle: const TextStyle(color: Colors.white54),
+                    prefixIcon: const Icon(Icons.category_rounded, color: Colors.white54),
+                    filled: true,
+                    fillColor: _bgPage,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: const BorderSide(color: Colors.white10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: const BorderSide(color: _grad2, width: 2),
+                    ),
+                  ),
+                  items: ['Segi Empat', 'Segitiga'].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text('Piramida $value'),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      _tipePiramida = newValue!;
+                      _hasilLuas = '0';
+                      _hasilVolume = '0';
+                    });
+                  },
+                ),
+                const SizedBox(height: 16),
+                
+                // --- INPUT SISI ---
                 TextField(
                   controller: _sisiController,
                   keyboardType: TextInputType.number,
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
                   decoration: InputDecoration(
-                    labelText: 'Panjang Sisi Alas',
-                    hintText: 'masukan Nilai Sisi',
-                    prefixIcon: const Icon(Icons.square_foot),
+                    labelText: _tipePiramida == 'Segi Empat' ? 'Panjang Sisi Persegi (Alas)' : 'Panjang Sisi Segitiga (Alas)',
+                    labelStyle: const TextStyle(color: Colors.white54),
+                    hintText: 'Masukkan nilai sisi',
+                    hintStyle: const TextStyle(color: Colors.white24),
+                    prefixIcon: const Icon(Icons.square_foot_rounded, color: Colors.white54),
                     filled: true,
-                    fillColor: Colors.grey.shade50,
+                    fillColor: _bgPage,
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: const BorderSide(color: Colors.white10),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(color: Colors.orange.shade400, width: 2),
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: const BorderSide(color: _grad2, width: 2),
                     ),
                   ),
                 ),
                 const SizedBox(height: 16),
                 
+                // --- INPUT TINGGI ---
                 TextField(
                   controller: _tinggiController,
                   keyboardType: TextInputType.number,
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
                   decoration: InputDecoration(
-                    labelText: 'Tinggi Piramida',
-                    hintText: 'masukan Nilai Tinggi',
-                    prefixIcon: const Icon(Icons.height),
+                    labelText: 'Tinggi Piramida (Limas)',
+                    labelStyle: const TextStyle(color: Colors.white54),
+                    hintText: 'Masukkan nilai tinggi',
+                    hintStyle: const TextStyle(color: Colors.white24),
+                    prefixIcon: const Icon(Icons.height_rounded, color: Colors.white54),
                     filled: true,
-                    fillColor: Colors.grey.shade50,
+                    fillColor: _bgPage,
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(color: Colors.orange.shade400, width: 2),
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: const BorderSide(color: Colors.white10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: const BorderSide(color: _grad2, width: 2),
                     ),
                   ),
                 ),
                 const SizedBox(height: 24),
                 
+                // --- TOMBOL HITUNG ---
                 SizedBox(
                   width: double.infinity,
                   height: 55,
-                  child: ElevatedButton.icon(
+                  child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange.shade600,
+                      padding: EdgeInsets.zero,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(16),
                       ),
+                      elevation: 4,
+                      shadowColor: _grad1.withOpacity(0.4),
                     ),
                     onPressed: _hitungPiramida,
-                    icon: const Icon(Icons.calculate, color: Colors.black87,),
-                    label: const Text(
-                      'Hitung Dimensi',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.black87 ,letterSpacing: 1),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [_grad1, _grad2],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.calculate_rounded, color: Colors.white, size: 20),
+                            SizedBox(width: 8),
+                            Text(
+                              'Hitung Dimensi',
+                              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700, letterSpacing: 0.5),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 32),
-                const Divider(color: Colors.black12,),
-                const SizedBox(height: 24),
+                const Divider(color: Colors.white10, height: 1),
+                const SizedBox(height: 32),
                 
-                // Kotak Hasil
+                // --- KOTAK HASIL ---
                 Container(
-                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 10),
                   decoration: BoxDecoration(
-                    color: Colors.orange.shade50,
+                    color: _grad2.withOpacity(0.08),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.orange.shade200),
+                    border: Border.all(color: _grad2.withOpacity(0.2)),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -197,31 +312,37 @@ class _PyramidPageState extends State<PyramidPage> {
                       Expanded(
                         child: Column(
                           children: [
-                            Text('LUAS PERMUKAAN', style: TextStyle(color: Colors.orange.shade800, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
-                            const SizedBox(height: 8),
-                            Text(
-                              _hasilLuas,
-                              style: const TextStyle(
-                                fontSize: 24, 
-                                fontWeight: FontWeight.bold, 
-                                color: Colors.orange
+                            const Text('LUAS PERMUKAAN', style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                            const SizedBox(height: 12),
+                            FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                _hasilLuas,
+                                style: TextStyle(
+                                  fontSize: 26, 
+                                  fontWeight: FontWeight.bold, 
+                                  color: Colors.pink.shade300,
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      Container(height: 40, width: 1, color: Colors.orange.shade300),
+                      Container(height: 50, width: 1, color: Colors.white10),
                       Expanded(
                         child: Column(
                           children: [
-                            const Text('Volume', style: TextStyle(color: Colors.grey, fontSize: 12)),
-                            const SizedBox(height: 8),
-                            Text(
-                              _hasilVolume,
-                              style: TextStyle(
-                                fontSize: 24, 
-                                fontWeight: FontWeight.bold, 
-                                color: Colors.deepOrange.shade600,
+                            const Text('VOLUME TOTAL', style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                            const SizedBox(height: 12),
+                            FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                _hasilVolume,
+                                style: const TextStyle(
+                                  fontSize: 26, 
+                                  fontWeight: FontWeight.bold, 
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ],

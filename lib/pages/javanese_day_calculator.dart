@@ -8,6 +8,13 @@ class WetonPage extends StatefulWidget {
 }
 
 class _WetonPageState extends State<WetonPage> {
+  // ── Warna tema dark disamain sama Calculator & Home ─────────
+  static const _bgPage = Color(0xFF0F0F1A);
+  static const _bgCard = Color(0xFF1A1A2E);
+  // Warna aksen Ungu/Purple sesuai icon di HomePage
+  static const _grad1 = Color(0xFF4A148C); 
+  static const _grad2 = Color(0xFF7B1FA2);
+
   DateTime? _selectedDate;
   String _hasilWeton = "-";
 
@@ -30,25 +37,26 @@ class _WetonPageState extends State<WetonPage> {
   Future<void> _pilihTanggal(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: _selectedDate ?? DateTime.now(), // Default ke hari ini
-      firstDate: DateTime(1900), // Batas tahun bawah
-      lastDate: DateTime(2100),  // Batas tahun atas
+      initialDate: _selectedDate ?? DateTime.now(),
+      firstDate: DateTime(1900), 
+      lastDate: DateTime(2100),  
       builder: (context, child) {
-        // Mewarnai kalender agar sesuai tema Cokelat
+        // Kalender dibikin dark mode dengan aksen ungu
         return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              primary: Colors.brown.shade600, // Warna header kalender
-              onPrimary: Colors.white,
-              onSurface: Colors.brown.shade900, // Warna angka tanggal
+          data: ThemeData.dark().copyWith(
+            colorScheme: const ColorScheme.dark(
+              primary: _grad2, // Warna aksen utama (header, tombol pilih)
+              onPrimary: Colors.white, // Teks di atas warna utama
+              surface: _bgCard, // Warna background panel kalender
+              onSurface: Colors.white, // Teks tanggal
             ),
+            dialogBackgroundColor: _bgPage,
           ),
           child: child!,
         );
       },
     );
 
-    // Kalau user pilih tanggal (tidak klik cancel), update UI dan hitung weton
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
@@ -57,131 +65,191 @@ class _WetonPageState extends State<WetonPage> {
     }
   }
 
-
+  // Fungsi pembantu buat format nama bulan biar bahasa Indonesia
+  String _formatTanggalIndo(DateTime date) {
+    final List<String> namaBulan = [
+      '', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+    return "${date.day} ${namaBulan[date.month]} ${date.year}";
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: _bgPage,
       appBar: AppBar(
-        title: const Text('Weton', style: TextStyle(fontWeight: FontWeight.bold),),
-        backgroundColor: Colors.blue.shade700,
-        foregroundColor: Colors.white,
+        backgroundColor: _bgPage,
         elevation: 0,
+        leading: IconButton(
+          icon: Container(
+            width: 36, height: 36,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.07),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white60, size: 16),
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text('Hitung Weton',
+          style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w600)),
         centerTitle: true,
       ),
+      
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Card(
-          elevation: 5,
-          shadowColor: Colors.blue.shade100,
-          color: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24)
-          ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+        child: Material(
+          color: _bgCard,
+          borderRadius: BorderRadius.circular(28),
+          elevation: 8,
+          shadowColor: Colors.black45,
           child: Padding(
-            padding: const EdgeInsetsGeometry.all(32.0),
+            padding: const EdgeInsets.all(28.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Ikon Klaender dengan tema Coklat
+                // Icon Header (Gradient Ungu)
                 Container(
-                  padding: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.deepOrange.shade50,
                     shape: BoxShape.circle,
-                  ),
-                  child: Icon(Icons.dark_mode_outlined, size: 60, color: Colors.deepOrange.shade600,),
-                ),
-                const SizedBox(height: 20,),
-                Text(
-                  'Cek Hari Pasaran',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold, 
-                    color: Colors.grey.shade800,
-                  ),
-                ),
-                const SizedBox(height: 30,),
-
-                // Menampilkan tanggal yang dipilih
-                Text(
-                  'Tanggal Pilihan',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.shade600,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8,),
-                Text(
-                  _selectedDate == null ? 'Belum ada tanggal dipilih' : '${_selectedDate!.day} / ${_selectedDate!.month} / ${_selectedDate!.year}',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: _selectedDate == null ? Colors.grey.shade400 : Colors.deepOrange.shade800, 
-                  ),
-                ),
-                const SizedBox(height: 24,),
-
-                // tombol buka kalender
-                SizedBox(
-                  width: double.infinity,
-                  height: 55,
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepOrange.shade600,
-                      foregroundColor: Colors.white,
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
+                    gradient: const LinearGradient(
+                      colors: [_grad1, _grad2],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    onPressed: () => _pilihTanggal(context), 
-                    label: const Text(
-                      'Pilih Tanggal',
-                      style: TextStyle(
-                        fontSize: 16, 
-                        fontWeight: FontWeight.bold, 
-                        letterSpacing: 1,
+                    boxShadow: [
+                      BoxShadow(
+                        color: _grad1.withOpacity(0.4),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
                       ),
-                    
-                    ),
-                  
+                    ],
                   ),
+                  child: const Icon(Icons.nights_stay_rounded, size: 48, color: Colors.white),
                 ),
-                const SizedBox(height: 32,),
-                const Divider(color: Colors.black12,),
-                const SizedBox(height: 24,),
+                const SizedBox(height: 24),
+                
+                const Text(
+                  'Cek Hari Pasaran Jawa',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Pilih tanggal masehi untuk mengetahui hari dan pasaran jawanya.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 13, color: Colors.white54),
+                ),
+                const SizedBox(height: 32),
 
-                // kotak hasil weton
+                // --- INFORMASI TANGGAL YANG DIPILIH ---
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16,),
+                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                   decoration: BoxDecoration(
-                    color: Colors.deepOrange.shade50,
+                    color: _bgPage,
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.deepOrange.shade200),
+                    border: Border.all(color: Colors.white10),
                   ),
                   child: Column(
                     children: [
-                      Text(
-                        'Hari Pasaran',
-                        style: TextStyle(
-                          color: Colors.deepOrange.shade800,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.5,
+                      const Text(
+                        'TANGGAL MASUKAN',
+                        style: TextStyle(fontSize: 11, color: Colors.white38, fontWeight: FontWeight.bold, letterSpacing: 1.5),
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.calendar_month_rounded, 
+                            color: _selectedDate == null ? Colors.white24 : _grad2,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            _selectedDate == null ? 'Belum dipilih' : _formatTanggalIndo(_selectedDate!),
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: _selectedDate == null ? Colors.white38 : Colors.white, 
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // --- TOMBOL PILIH TANGGAL ---
+                SizedBox(
+                  width: double.infinity,
+                  height: 55,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      elevation: 4,
+                      shadowColor: _grad1.withOpacity(0.4),
+                    ),
+                    onPressed: () => _pilihTanggal(context), 
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [_grad1, _grad2],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.edit_calendar_rounded, color: Colors.white, size: 20),
+                            SizedBox(width: 8),
+                            Text(
+                              'Pilih Tanggal',
+                              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700, letterSpacing: 0.5),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 12,),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 32),
+                const Divider(color: Colors.white10, height: 1),
+                const SizedBox(height: 32),
+
+                // --- KOTAK HASIL WETON ---
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: _grad2.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: _grad2.withOpacity(0.2)),
+                  ),
+                  child: Column(
+                    children: [
+                      const Text(
+                        'HASIL WETON',
+                        style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5),
+                      ),
+                      const SizedBox(height: 16),
                       Text(
                         _hasilWeton,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color:  _hasilWeton == '-' ? Colors.deepOrange.shade300 : Colors.deepOrange.shade900,
+                          fontSize: 36,
+                          fontWeight: FontWeight.w700,
+                          color:  _hasilWeton == '-' ? Colors.white24 : Colors.purple.shade300,
                         ),
                       ),
                     ],
