@@ -127,12 +127,12 @@ class _WetonPageState extends State<WetonPage> {
                 const SizedBox(height: 24),
                 
                 const Text(
-                  'Cek Hari Pasaran Jawa',
+                  'Cek Hari Weton',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'Pilih tanggal masehi untuk mengetahui hari dan pasaran jawanya.',
+                  'Pilih tanggal masehi untuk mengetahui hari weton.',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 13, color: Colors.white54),
                 ),
